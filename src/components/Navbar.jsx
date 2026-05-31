@@ -1,18 +1,48 @@
 import { useState } from "react"
-import { motion, AnimatePresence } from "framer-motion"
+import { motion, AnimatePresence, useScroll, useMotionValueEvent } from "framer-motion"
 import { FiMenu, FiX, FiGlobe } from "react-icons/fi"
 import BrutalButton from "./ui/BrutalButton"
 import { useLanguage } from "../contexts/LanguageContext"
+import { cn } from "../lib/utils"
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false)
+  const [hidden, setHidden] = useState(false)
+  const [isScrolled, setIsScrolled] = useState(false)
+  const { scrollY } = useScroll()
   const { lang, toggleLang, t } = useLanguage()
+
+  useMotionValueEvent(scrollY, "change", (latest) => {
+    const previous = scrollY.getPrevious()
+    if (latest > 100 && latest > previous) {
+      setHidden(true)
+    } else {
+      setHidden(false)
+    }
+    
+    if (latest > 20) {
+      setIsScrolled(true)
+    } else {
+      setIsScrolled(false)
+    }
+  })
 
   const navKeys = ["home", "about", "skills", "projects", "contact"]
 
   return (
     <>
-      <nav className="fixed top-0 left-0 w-full bg-base-cream border-b-[3px] border-brutal-black z-40 px-6 py-4 flex items-center justify-between">
+      <motion.nav 
+        variants={{
+          visible: { y: 0 },
+          hidden: { y: "-100%" }
+        }}
+        animate={hidden ? "hidden" : "visible"}
+        transition={{ duration: 0.3, ease: [0.34, 1.56, 0.64, 1] }}
+        className={cn(
+          "fixed top-0 left-0 w-full bg-base-cream z-40 px-6 py-4 flex items-center justify-between transition-all duration-300",
+          isScrolled ? "border-b-[3px] border-brutal-black" : "border-b-0 border-transparent"
+        )}
+      >
         <div className="font-grotesk font-black text-3xl">
           ANGGA<span className="text-primary-yellow">.</span>
         </div>
@@ -23,10 +53,9 @@ export default function Navbar() {
             <a 
               key={key} 
               href={`#${key === "home" ? "" : key}`}
-              className="relative group py-2"
+              className="nav-link-hover py-2"
             >
               {t.nav[key]}
-              <span className="absolute bottom-0 left-0 w-0 h-1 bg-brutal-black transition-all duration-300 ease-out group-hover:w-full"></span>
             </a>
           ))}
           
@@ -40,10 +69,11 @@ export default function Navbar() {
 
           <BrutalButton 
             variant="primary" 
-            className="py-2 px-4 text-xs ml-2"
+            className="py-2 px-4 text-xs ml-2 relative overflow-hidden group"
             onClick={() => window.open('https://wa.me/6285398009506', '_blank')}
           >
             {t.nav.hire}
+            {/* Particle placeholder - handled globally by physics now or customized later */}
           </BrutalButton>
         </div>
 
@@ -63,7 +93,7 @@ export default function Navbar() {
             <FiMenu size={24} />
           </button>
         </div>
-      </nav>
+      </motion.nav>
 
       {/* Mobile Drawer */}
       <AnimatePresence>

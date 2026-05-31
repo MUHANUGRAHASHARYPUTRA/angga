@@ -35,34 +35,70 @@ export default function Skills() {
       <div className="absolute inset-0 pattern-dots opacity-50 pointer-events-none"></div>
       
       <div className="container mx-auto px-6 relative z-10">
-        <SectionLabel>{t.skills.title}</SectionLabel>
+        <motion.div
+          initial={{ x: -60, scale: 0.8, opacity: 0 }}
+          whileInView={{ x: 0, scale: 1, opacity: 1 }}
+          viewport={{ once: false, amount: 0.2 }}
+          transition={{ duration: 0.4 }}
+        >
+          <SectionLabel>{t.skills.title}</SectionLabel>
+        </motion.div>
 
-        <div className="grid md:grid-cols-2 gap-8">
-          {skillCategories.map((category, idx) => (
+        <motion.div 
+          className="grid md:grid-cols-2 gap-8"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: false, amount: 0.1 }}
+          variants={{
+            hidden: {},
+            visible: { transition: { staggerChildren: 0.12 } }
+          }}
+        >
+          {skillCategories.map((category) => (
             <motion.div
               key={category.title}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: idx * 0.1 }}
+              variants={{
+                hidden: { opacity: 0, y: 60 },
+                visible: { opacity: 1, y: 0, transition: { duration: 0.45, ease: "easeOut" } }
+              }}
             >
               <BrutalCard className={`border-l-[12px] ${category.borderColor}`}>
                 <h3 className="text-2xl font-black font-grotesk mb-6 uppercase">{category.title}</h3>
-                <div className="flex flex-wrap gap-3">
+                <motion.div 
+                  className="flex flex-wrap gap-3"
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{ once: false }}
+                  variants={{
+                    hidden: {},
+                    visible: { transition: { staggerChildren: 0.04, delayChildren: 0.2 } }
+                  }}
+                >
                   {category.skills.map((skill) => (
                     <motion.div
                       key={skill}
-                      whileHover={{ y: -3, scale: 1.05 }}
+                      variants={{
+                        hidden: { scale: 0, opacity: 0 },
+                        visible: { scale: 1, opacity: 1, transition: { type: "spring", stiffness: 400, damping: 20 } }
+                      }}
+                      whileHover={{ 
+                        y: -2, 
+                        x: -2, 
+                        rotate: [-2, 2, 0],
+                        boxShadow: "5px 5px 0px #0A0A0A",
+                        backgroundColor: "#FFE500",
+                        transition: { duration: 0.2 }
+                      }}
                       className="bg-base-cream border-[2px] border-brutal-black px-4 py-2 font-bold font-mono text-sm shadow-[3px_3px_0px_#0A0A0A] cursor-default"
                     >
                       {skill}
                     </motion.div>
                   ))}
-                </div>
+                </motion.div>
               </BrutalCard>
             </motion.div>
           ))}
-        </div>
+        </motion.div>
       </div>
     </section>
   )

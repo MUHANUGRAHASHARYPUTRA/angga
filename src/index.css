@@ -18,6 +18,9 @@
   --shadow-brutal-hover: 6px 6px 0px 0px #0A0A0A;
   --shadow-brutal-yellow: 8px 8px 0px 0px #FFE500;
   --shadow-brutal-pink: 8px 8px 0px 0px #FF2D78;
+
+  --ease-brutal: cubic-bezier(0.76, 0, 0.24, 1);
+  --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 @layer base {
@@ -57,4 +60,58 @@
 .pattern-dots {
   background-image: radial-gradient(#0A0A0A 1.5px, transparent 1.5px);
   background-size: 24px 24px;
+}
+
+/* Neobrutalism UI specifics */
+@media (prefers-reduced-motion: reduce) {
+  *, ::before, ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Nav link draw effect */
+.nav-link-hover {
+  position: relative;
+}
+.nav-link-hover::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  right: 0;
+  width: 0;
+  height: 3px;
+  background-color: var(--color-brutal-black);
+  transition: width 250ms linear;
+}
+.nav-link-hover:hover::after {
+  width: 100%;
+  left: 0;
+  right: auto;
+}
+
+/* Marquee speed toggle */
+.marquee-slow {
+  animation-duration: 45s !important;
+}
+
+/* Filter tab wipe trick */
+.filter-wipe-active {
+  position: relative;
+  overflow: hidden;
+}
+.filter-wipe-active::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-color: var(--color-primary-yellow);
+  z-index: -1;
+  animation: wipeIn 250ms var(--ease-brutal) forwards;
+}
+
+@keyframes wipeIn {
+  from { transform: translateX(-100%); }
+  to { transform: translateX(0); }
 }

@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react"
-import { motion, AnimatePresence } from "framer-motion"
+import { useEffect, useState, useRef } from "react"
+import { motion, AnimatePresence, useInView } from "framer-motion"
 import { supabase } from "../lib/supabase"
 import SectionLabel from "./ui/SectionLabel"
 import BrutalCard from "./ui/BrutalCard"
@@ -43,15 +43,49 @@ const MOCK_PROJECTS = [
   }
 ]
 
+const ScrambleText = ({ text, trigger }) => {
+  const [displayText, setDisplayText] = useState(text)
+  const [started, setStarted] = useState(false)
+  const ref = useRef(null)
+  const isInView = useInView(ref, { once: false, amount: 0.5 })
+  
+  useEffect(() => {
+    if (!isInView && trigger === 0) return
+    
+    let iteration = 0
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdef@#$%'
+    
+    const interval = setInterval(() => {
+      setDisplayText(text.split('').map((letter, index) => {
+        if (index < iteration) {
+          return text[index]
+        }
+        if (text[index] === ' ') return ' '
+        return chars[Math.floor(Math.random() * chars.length)]
+      }).join(''))
+      
+      if (iteration >= text.length) {
+        clearInterval(interval)
+      }
+      
+      iteration += 1 / 1.5 // roughly 60ms settle per letter
+    }, 40)
+    
+    return () => clearInterval(interval)
+  }, [text, trigger, isInView])
+  
+  return <span ref={ref}>{displayText}</span>
+}
+
 export default function Projects() {
   const { t } = useLanguage()
   const [projects, setProjects] = useState([])
   const [filter, setFilter] = useState(t.projects.filters[0])
+  const [scrambleTrigger, setScrambleTrigger] = useState(0)
   const [loading, setLoading] = useState(true)
 
   const filters = t.projects.filters
 
-  // Update filter when language changes if it was "All"/"Semua"
   useEffect(() => {
     if (filter === "All" || filter === "Semua") {
       setFilter(t.projects.filters[0])
@@ -61,34 +95,21 @@ export default function Projects() {
   useEffect(() => {
     async function fetchProjects() {
       try {
-        const { data, error } = await supabase
-          .from('projects')
-          .select('*')
-          .order('created_at', { ascending: false })
-        
+        const { data, error } = await supabase.from('projects').select('*').order('created_at', { ascending: false })
         if (error) throw error
-        
-        if (data && data.length > 0) {
-          setProjects(data)
-        } else {
-          // Fallback to mock if table is empty or missing
-          setProjects(MOCK_PROJECTS)
-        }
+        setProjects(data && data.length > 0 ? data : MOCK_PROJECTS)
       } catch (err) {
-        console.error("Error fetching projects:", err)
         setProjects(MOCK_PROJECTS)
       } finally {
         setLoading(false)
       }
     }
-    
     fetchProjects()
   }, [])
 
   const filteredProjects = filter === t.projects.filters[0]
     ? projects 
     : projects.filter(p => {
-        // Handle mapped categories like "Other" vs "Lainnya"
         const isOther = filter === t.projects.filters[3]
         if (isOther && p.category !== "Web App" && p.category !== "UI/UX") return true
         return p.category === filter
@@ -99,43 +120,71 @@ export default function Projects() {
       <div className="container mx-auto px-6">
         
         <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-12">
-          <SectionLabel color="bg-secondary-cyan" className="mb-0">{t.projects.title}</SectionLabel>
+          <div>
+            <motion.div
+              initial={{ x: -60, scale: 0.8, opacity: 0 }}
+              whileInView={{ x: 0, scale: 1, opacity: 1 }}
+              viewport={{ once: false }}
+              transition={{ duration: 0.4 }}
+            >
+              <SectionLabel color="bg-secondary-cyan" className="mb-2">{t.projects.title}</SectionLabel>
+            </motion.div>
+            <p className="font-grotesk font-black text-2xl uppercase mt-2">
+              <ScrambleText text={`0${filteredProjects.length} Karya yang pernah saya bangun.`} trigger={scrambleTrigger} />
+            </p>
+          </div>
           
           {/* Filters */}
-          <div className="flex flex-wrap gap-2 mt-6 md:mt-0">
+          <motion.div 
+            className="flex flex-wrap gap-2 mt-6 md:mt-0"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: false }}
+            variants={{
+              hidden: { opacity: 0 },
+              visible: { opacity: 1, transition: { staggerChildren: 0.1 } }
+            }}
+          >
             {filters.map(f => (
-              <button
+              <motion.button
                 key={f}
-                onClick={() => setFilter(f)}
+                variants={{
+                  hidden: { opacity: 0, x: -40 },
+                  visible: { opacity: 1, x: 0, transition: { duration: 0.4 } }
+                }}
+                onClick={() => {
+                  setFilter(f)
+                  setScrambleTrigger(p => p + 1)
+                }}
                 className={`border-[2px] border-brutal-black px-4 py-2 font-mono text-sm font-bold transition-colors shadow-[2px_2px_0px_#0A0A0A] hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[3px_3px_0px_#0A0A0A] ${
-                  filter === f ? 'bg-primary-yellow text-brutal-black' : 'bg-brutal-white text-gray-500'
+                  filter === f ? 'bg-primary-yellow text-brutal-black filter-wipe-active' : 'bg-brutal-white text-gray-500'
                 }`}
               >
                 {f}
-              </button>
+              </motion.button>
             ))}
-          </div>
+          </motion.div>
         </div>
 
         {/* Projects Grid */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           <AnimatePresence mode="popLayout">
-            {filteredProjects.map((project) => (
+            {filteredProjects.map((project, i) => (
               <motion.div
                 layout
                 key={project.id}
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
+                initial={{ opacity: 0, scale: 0.95, y: 80 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
                 exit={{ opacity: 0, scale: 0.9 }}
-                transition={{ duration: 0.3 }}
+                transition={{ duration: 0.5, ease: [0.76, 0, 0.24, 1], delay: i * 0.12 }}
               >
-                <BrutalCard className="h-full flex flex-col p-4">
+                <BrutalCard hoverEffect className="h-full flex flex-col p-4 group">
                   {/* Image */}
-                  <div className="border-[2px] border-brutal-black aspect-video mb-4 overflow-hidden relative group">
+                  <div className="border-[2px] border-brutal-black aspect-video mb-4 overflow-hidden relative">
                     <img 
                       src={project.image_url} 
                       alt={project.title} 
-                      className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-300"
+                      className="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-300"
                     />
                     <div className="absolute top-2 left-2 bg-tertiary-pink border-[2px] border-brutal-black text-brutal-white text-xs font-mono font-bold px-2 py-1">
                       {project.category}
