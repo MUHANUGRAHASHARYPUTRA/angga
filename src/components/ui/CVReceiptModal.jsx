@@ -11,7 +11,7 @@ export default function CVReceiptModal({ isOpen, onClose }) {
   })
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+    <div className="fixed inset-0 z-50 p-4 overflow-y-auto flex flex-col items-center">
       {/* Backdrop */}
       <motion.div 
         initial={{ opacity: 0 }}
@@ -27,7 +27,7 @@ export default function CVReceiptModal({ isOpen, onClose }) {
         animate={{ y: 0, rotate: 0 }}
         exit={{ y: "100vh", rotate: 5 }}
         transition={{ type: "spring", damping: 15, stiffness: 100 }}
-        className="relative z-10 w-full max-w-sm"
+        className="relative z-10 w-full max-w-sm my-auto py-8"
       >
         {/* Receipt Paper */}
         <div className="bg-[#f4f4f0] text-brutal-black font-mono border-[3px] border-brutal-black shadow-[12px_12px_0px_#FFE500] flex flex-col relative overflow-hidden">
@@ -35,17 +35,17 @@ export default function CVReceiptModal({ isOpen, onClose }) {
           {/* Jagged Top Edge (using CSS masking or simple pseudo-elements, here we use a tiled background or svg) */}
           <div className="h-4 w-full" style={{ backgroundImage: 'radial-gradient(circle at 10px 0, transparent 10px, #0A0A0A 11px, #f4f4f0 12px)', backgroundSize: '20px 20px', backgroundPosition: 'bottom' }}></div>
 
-          <div className="p-8 pt-4 flex-grow flex flex-col items-center">
+          <div className="p-6 pt-4 flex-grow flex flex-col items-center">
             {/* Header */}
-            <div className="text-center mb-6 w-full border-b-[2px] border-dashed border-brutal-black pb-6">
-              <h3 className="font-grotesk font-black text-3xl tracking-widest mb-1">ANGGA MART</h3>
+            <div className="text-center mb-4 w-full border-b-[2px] border-dashed border-brutal-black pb-4">
+              <h3 className="font-grotesk font-black text-2xl md:text-3xl tracking-widest mb-1">ANGGA MART</h3>
               <p className="text-xs font-bold">INFO. SYSTEMS STUDENT</p>
               <p className="text-xs">UNHAS · MAKASSAR</p>
               <p className="text-xs mt-2 font-bold">{today} · 09:41 AM</p>
             </div>
 
             {/* Items */}
-            <div className="w-full text-sm font-bold flex flex-col gap-3 mb-6">
+            <div className="w-full text-sm font-bold flex flex-col gap-2 mb-4">
               <div className="flex justify-between border-b-[2px] border-brutal-black pb-1">
                 <span>ITEM</span>
                 <span>LEVEL</span>
@@ -73,13 +73,13 @@ export default function CVReceiptModal({ isOpen, onClose }) {
             </div>
 
             {/* Total */}
-            <div className="w-full text-center border-y-[2px] border-dashed border-brutal-black py-4 mb-6">
+            <div className="w-full text-center border-y-[2px] border-dashed border-brutal-black py-3 mb-4">
               <p className="text-sm font-bold mb-1">TOTAL EXPERIENCE:</p>
               <p className="font-grotesk font-black text-2xl">2+ YEARS</p>
             </div>
 
             {/* Footer */}
-            <p className="text-center font-bold text-sm mb-6">
+            <p className="text-center font-bold text-xs md:text-sm mb-4">
               THANK YOU FOR VISITING!<br/>
               SCAN BARCODE TO HIRE
             </p>

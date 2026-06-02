@@ -49,9 +49,7 @@ export default function Testimonials() {
               }}
               viewport={{ once: false, amount: 0.2 }}
               transition={{ delay: i * 0.15, duration: 0.5, type: "spring" }}
-              className="relative cursor-grab active:cursor-grabbing"
-              drag
-              dragConstraints={{ left: -30, right: 30, top: -30, bottom: 30 }}
+              className="relative"
             >
               {/* Tape Effect */}
               <div className="absolute -top-4 left-1/2 -translate-x-1/2 w-16 h-8 bg-white/40 border-[2px] border-brutal-black z-20 shadow-[2px_2px_0px_#0A0A0A] backdrop-blur-sm transform rotate-[-3deg]"></div>
