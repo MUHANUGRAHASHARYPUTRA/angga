@@ -115,3 +115,9 @@
   from { transform: translateX(-100%); }
   to { transform: translateX(0); }
 }
+
+body.hide-back-to-top #back-to-top-btn {
+  opacity: 0 !important;
+  pointer-events: none;
+}
+

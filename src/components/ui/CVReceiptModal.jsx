@@ -1,8 +1,18 @@
+import { useEffect } from "react"
 import { motion } from "framer-motion"
 import { FiDownload, FiX } from "react-icons/fi"
 import BrutalButton from "./BrutalButton"
 
 export default function CVReceiptModal({ isOpen, onClose }) {
+  useEffect(() => {
+    if (isOpen) {
+      document.body.classList.add("hide-back-to-top")
+    } else {
+      document.body.classList.remove("hide-back-to-top")
+    }
+    return () => document.body.classList.remove("hide-back-to-top")
+  }, [isOpen])
+
   if (!isOpen) return null
 
   // Generate current date for the receipt
@@ -35,17 +45,17 @@ export default function CVReceiptModal({ isOpen, onClose }) {
           {/* Jagged Top Edge (using CSS masking or simple pseudo-elements, here we use a tiled background or svg) */}
           <div className="h-4 w-full" style={{ backgroundImage: 'radial-gradient(circle at 10px 0, transparent 10px, #0A0A0A 11px, #f4f4f0 12px)', backgroundSize: '20px 20px', backgroundPosition: 'bottom' }}></div>
 
-          <div className="p-6 pt-4 flex-grow flex flex-col items-center">
+          <div className="p-4 md:p-6 pt-4 flex-grow flex flex-col items-center">
             {/* Header */}
             <div className="text-center mb-4 w-full border-b-[2px] border-dashed border-brutal-black pb-4">
-              <h3 className="font-grotesk font-black text-2xl md:text-3xl tracking-widest mb-1">ANGGA MART</h3>
-              <p className="text-xs font-bold">INFO. SYSTEMS STUDENT</p>
-              <p className="text-xs">UNHAS · MAKASSAR</p>
-              <p className="text-xs mt-2 font-bold">{today} · 09:41 AM</p>
+              <h3 className="font-grotesk font-black text-xl md:text-3xl tracking-widest mb-1">ANGGA MART</h3>
+              <p className="text-[10px] md:text-xs font-bold">INFO. SYSTEMS STUDENT</p>
+              <p className="text-[10px] md:text-xs">UNHAS · MAKASSAR</p>
+              <p className="text-[10px] md:text-xs mt-2 font-bold">{today} · 09:41 AM</p>
             </div>
 
             {/* Items */}
-            <div className="w-full text-sm font-bold flex flex-col gap-2 mb-4">
+            <div className="w-full text-xs md:text-sm font-bold flex flex-col gap-2 mb-4">
               <div className="flex justify-between border-b-[2px] border-brutal-black pb-1">
                 <span>ITEM</span>
                 <span>LEVEL</span>
@@ -74,8 +84,8 @@ export default function CVReceiptModal({ isOpen, onClose }) {
 
             {/* Total */}
             <div className="w-full text-center border-y-[2px] border-dashed border-brutal-black py-3 mb-4">
-              <p className="text-sm font-bold mb-1">TOTAL EXPERIENCE:</p>
-              <p className="font-grotesk font-black text-2xl">2+ YEARS</p>
+              <p className="text-xs md:text-sm font-bold mb-1">TOTAL EXPERIENCE:</p>
+              <p className="font-grotesk font-black text-xl md:text-2xl">2+ YEARS</p>
             </div>
 
             {/* Footer */}
