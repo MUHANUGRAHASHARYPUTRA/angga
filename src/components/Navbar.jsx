@@ -70,7 +70,8 @@ export default function Navbar() {
           <BrutalButton 
             variant="primary" 
             className="py-2 px-4 text-xs ml-2 relative overflow-hidden group"
-            onClick={() => window.open('https://wa.me/6285398009506', '_blank')}
+            href="https://wa.me/6285398009506"
+            target="_blank"
           >
             {t.nav.hire}
             {/* Particle placeholder - handled globally by physics now or customized later */}
@@ -128,10 +129,9 @@ export default function Navbar() {
                 <BrutalButton 
                   variant="white" 
                   className="w-full text-xl py-4"
-                  onClick={() => {
-                    setIsOpen(false);
-                    window.open('https://wa.me/6285398009506', '_blank');
-                  }}
+                  href="https://wa.me/6285398009506"
+                  target="_blank"
+                  onClick={() => setIsOpen(false)}
                 >
                   {t.nav.hire}
                 </BrutalButton>

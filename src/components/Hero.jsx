@@ -91,12 +91,12 @@ export default function Hero() {
             className="flex flex-wrap gap-4 mt-4"
           >
             <motion.div variants={{ hidden: { opacity: 0, y: 30, scale: 0.9 }, visible: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.35 } } }}>
-              <BrutalButton variant="primary" onClick={() => window.location.href = '#projects'}>
+              <BrutalButton variant="primary" href="#projects">
                 {t.hero.work}
               </BrutalButton>
             </motion.div>
             <motion.div variants={{ hidden: { opacity: 0, y: 30, scale: 0.9 }, visible: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.35 } } }}>
-              <BrutalButton variant="white" onClick={() => window.open('/cv.pdf', '_blank')}>
+              <BrutalButton variant="white" href="/cv.pdf" target="_blank">
                 {t.hero.cv}
               </BrutalButton>
             </motion.div>

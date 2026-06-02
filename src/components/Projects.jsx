@@ -1,6 +1,5 @@
 import { useEffect, useState, useRef } from "react"
 import { motion, AnimatePresence, useInView } from "framer-motion"
-import { supabase } from "../lib/supabase"
 import SectionLabel from "./ui/SectionLabel"
 import BrutalCard from "./ui/BrutalCard"
 import BrutalButton from "./ui/BrutalButton"
@@ -68,8 +67,8 @@ const ScrambleText = ({ text, trigger }) => {
         clearInterval(interval)
       }
       
-      iteration += 1 / 1.5 // roughly 60ms settle per letter
-    }, 40)
+      iteration += 1.5 // settle letters much faster
+    }, 25)
     
     return () => clearInterval(interval)
   }, [text, trigger, isInView])
@@ -79,10 +78,9 @@ const ScrambleText = ({ text, trigger }) => {
 
 export default function Projects() {
   const { t } = useLanguage()
-  const [projects, setProjects] = useState([])
+  const [projects, setProjects] = useState(MOCK_PROJECTS)
   const [filter, setFilter] = useState(t.projects.filters[0])
   const [scrambleTrigger, setScrambleTrigger] = useState(0)
-  const [loading, setLoading] = useState(true)
 
   const filters = t.projects.filters
 
@@ -92,20 +90,7 @@ export default function Projects() {
     }
   }, [t.projects.filters])
 
-  useEffect(() => {
-    async function fetchProjects() {
-      try {
-        const { data, error } = await supabase.from('projects').select('*').order('created_at', { ascending: false })
-        if (error) throw error
-        setProjects(data && data.length > 0 ? data : MOCK_PROJECTS)
-      } catch (err) {
-        setProjects(MOCK_PROJECTS)
-      } finally {
-        setLoading(false)
-      }
-    }
-    fetchProjects()
-  }, [])
+
 
   const filteredProjects = filter === t.projects.filters[0]
     ? projects 
@@ -208,12 +193,12 @@ export default function Projects() {
                   {/* Actions */}
                   <div className="flex gap-2 mt-auto">
                     {project.live_url && (
-                      <BrutalButton variant="primary" className="flex-1 py-2 text-xs" onClick={() => window.open(project.live_url, '_blank')}>
+                      <BrutalButton variant="primary" className="flex-1 py-2 text-xs" href={project.live_url} target="_blank" rel="noopener noreferrer">
                         {t.projects.live}
                       </BrutalButton>
                     )}
                     {project.github_url && (
-                      <BrutalButton variant="white" className="flex-1 py-2 text-xs" onClick={() => window.open(project.github_url, '_blank')}>
+                      <BrutalButton variant="white" className="flex-1 py-2 text-xs" href={project.github_url} target="_blank" rel="noopener noreferrer">
                         {t.projects.github}
                       </BrutalButton>
                     )}

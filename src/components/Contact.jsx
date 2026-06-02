@@ -13,11 +13,11 @@ export default function Contact() {
   const [focusedField, setFocusedField] = useState(null)
   const buttonControls = useAnimation()
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault()
     
-    // Animate button bounce
-    await buttonControls.start({
+    // Animate button bounce (synchronously to prevent popup blocker)
+    buttonControls.start({
       scale: [1, 0.9, 1.1, 1],
       transition: { duration: 0.4 }
     })

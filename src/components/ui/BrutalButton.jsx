@@ -6,6 +6,8 @@ export default function BrutalButton({
   variant = "primary", 
   children, 
   onClick,
+  href,
+  target,
   ...props 
 }) {
   const controls = useAnimation()
@@ -59,8 +61,12 @@ export default function BrutalButton({
     controls.start({ x: 0, y: 0, boxShadow: "4px 4px 0px #0A0A0A", transition: { duration: 0.15 } })
   }
 
+  const Component = href ? motion.a : motion.button
+
   return (
-    <motion.button
+    <Component
+      href={href}
+      target={target}
       animate={controls}
       initial={{ x: 0, y: 0, boxShadow: "4px 4px 0px #0A0A0A", borderColor: "#0A0A0A" }}
       onPointerDown={handlePointerDown}
@@ -69,13 +75,13 @@ export default function BrutalButton({
       onHoverStart={handleHoverStart}
       onHoverEnd={handleHoverEnd}
       className={cn(
-        "border-[3px] border-brutal-black uppercase font-grotesk font-bold px-6 py-3 tracking-widest text-sm flex items-center justify-center gap-2 relative",
+        "border-[3px] border-brutal-black uppercase font-grotesk font-bold px-6 py-3 tracking-widest text-sm flex items-center justify-center gap-2 relative no-underline",
         variants[variant],
         className
       )}
       {...props}
     >
       {children}
-    </motion.button>
+    </Component>
   )
 }
