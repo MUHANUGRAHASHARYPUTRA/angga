@@ -20,31 +20,15 @@ export default function Hero() {
   }
 
   return (
-    <section id="home" className="relative min-h-screen pt-32 pb-24 md:pt-24 md:pb-12 flex flex-col justify-start md:justify-center overflow-hidden z-10" 
-      style={{ 
-        backgroundImage: 'linear-gradient(105deg, #FFFAEB 0%, #FFFAEB 49.5%, #333333 49.5%, #333333 50.5%, #FFFFFF 50.5%, #FFFFFF 100%)' 
-      }}>
+    <section id="home" className="relative min-h-screen pt-32 pb-24 md:pt-24 md:pb-12 flex flex-col justify-start md:justify-center overflow-hidden z-10"
+      style={{ background: 'linear-gradient(135deg, #FFFAEB 0%, #FFF8DC 50%, #FFE898 100%)' }}
+    >
       
-      {/* Lightweight Static Pop-Art Stickers & Pattern */}
+      {/* Latar Bercak Gradasi Soft (Sangat Ringan) */}
       <div className="absolute inset-0 z-0 pointer-events-none">
         
-        {/* Speckled Pattern Overlay (Bercak-bercak) */}
-        <div className="absolute inset-0 pattern-dots opacity-40"></div>
-
-        {/* Sticker 1: Thunderbolt */}
-        <div className="absolute top-[15%] left-[5%] md:left-[15%] w-16 h-16 bg-brutal-white border-[4px] border-brutal-black rounded-full flex items-center justify-center text-3xl shadow-[4px_4px_0px_#0A0A0A] -rotate-12">
-          ⚡
-        </div>
-
-        {/* Sticker 2: Alien */}
-        <div className="absolute bottom-[20%] right-[5%] md:right-[15%] w-20 h-20 bg-secondary-cyan border-[4px] border-brutal-black rounded-[2rem] flex items-center justify-center text-4xl shadow-[6px_6px_0px_#0A0A0A] rotate-12">
-          👾
-        </div>
-
-        {/* Sticker 3: Exclamation */}
-        <div className="absolute top-[40%] right-[35%] w-12 h-12 bg-brutal-white border-[3px] border-brutal-black rounded-sm flex items-center justify-center text-2xl shadow-[4px_4px_0px_#0A0A0A] rotate-[25deg] hidden md:flex">
-          ❗
-        </div>
+        {/* Pola Bercak (Dots) */}
+        <div className="absolute inset-0 pattern-dots opacity-40 mix-blend-multiply"></div>
 
       </div>
 
@@ -84,12 +68,12 @@ export default function Hero() {
             ))}
           </h1>
 
-          {/* Subtitle - Delay 380ms after letters */}
+          {/* Subtitle - Delay 150ms after letters */}
           <motion.div 
             initial={{ opacity: 0, x: 60 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: false, amount: 0.12 }}
-            transition={{ duration: 0.45, ease: "easeOut", delay: 0.6 }}
+            transition={{ duration: 0.4, ease: "easeOut", delay: 0.15 }}
             className="text-3xl md:text-5xl font-black font-grotesk flex flex-wrap gap-3 items-center"
           >
             <span>{t.hero.role1}</span>
@@ -98,12 +82,12 @@ export default function Hero() {
             </span>
           </motion.div>
 
-          {/* Description - Delay 500ms */}
+          {/* Description - Delay 250ms */}
           <motion.p 
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: false, amount: 0.12 }}
-            transition={{ duration: 0.4, delay: 0.8 }}
+            transition={{ duration: 0.35, delay: 0.25 }}
             className="text-lg md:text-xl max-w-md font-sans font-medium leading-relaxed"
           >
             {t.hero.sub}
@@ -116,7 +100,7 @@ export default function Hero() {
             viewport={{ once: false, amount: 0.12 }}
             variants={{
               hidden: { opacity: 0 },
-              visible: { opacity: 1, transition: { staggerChildren: 0.08, delayChildren: 1.0 } }
+              visible: { opacity: 1, transition: { staggerChildren: 0.08, delayChildren: 0.3 } }
             }}
             className="flex flex-wrap gap-4 mt-4"
           >

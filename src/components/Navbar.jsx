@@ -27,7 +27,7 @@ export default function Navbar() {
     }
   })
 
-  const navKeys = ["home", "about", "skills", "projects", "contact"]
+  const navKeys = ["home", "about", "skills", "projects", "playground", "contact"]
 
   return (
     <>
@@ -52,7 +52,7 @@ export default function Navbar() {
           {navKeys.map((key) => (
             <a 
               key={key} 
-              href={`#${key === "home" ? "" : key}`}
+              href={key === "playground" ? "/playground" : `/${key === "home" ? "" : "#" + key}`}
               className="nav-link-hover py-2"
             >
               {t.nav[key]}
@@ -117,7 +117,7 @@ export default function Navbar() {
               {navKeys.map((key) => (
                 <a 
                   key={key}
-                  href={`#${key === "home" ? "" : key}`}
+                  href={key === "playground" ? "/playground" : `/${key === "home" ? "" : "#" + key}`}
                   onClick={() => setIsOpen(false)}
                   className="hover:translate-x-2 transition-transform hover:text-brutal-white"
                   style={{ textShadow: "2px 2px 0px #0A0A0A" }}

@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { FiX } from 'react-icons/fi'
 import heroImg from '../assets/photo.jpg'
 
-export default function MiniGame({ onClose }) {
+export default function MiniGame({ onClose, embedded = false }) {
   const [isPlaying, setIsPlaying] = useState(false)
   const [isGameOver, setIsGameOver] = useState(false)
   const [score, setScore] = useState(0)
@@ -101,6 +101,88 @@ export default function MiniGame({ onClose }) {
     return () => cancelAnimationFrame(requestRef.current)
   }, [isPlaying, isGameOver])
 
+  const gameContent = (
+    <div className={`w-full max-w-2xl bg-base-cream border-[4px] border-brutal-black p-6 relative overflow-hidden shadow-[16px_16px_0px_#FF2D78] ${embedded ? 'h-full flex flex-col justify-center shadow-none border-none' : ''}`}>
+      <div className="flex justify-between items-center mb-4 border-b-[4px] border-brutal-black pb-4">
+        <h2 className="font-grotesk font-black text-3xl uppercase tracking-widest">Angga Run</h2>
+        <div className="font-mono font-bold text-2xl bg-brutal-black text-primary-yellow px-4 py-1">
+          SCORE: {score}
+        </div>
+      </div>
+
+      {/* Game Area */}
+      <div 
+        className="w-full h-64 border-[3px] border-brutal-black bg-white relative overflow-hidden cursor-pointer"
+        onClick={jump}
+      >
+        {/* Ground */}
+        <div className="absolute bottom-0 w-full h-2 bg-brutal-black"></div>
+
+        {/* Player */}
+        <div 
+          ref={playerRef}
+          className="absolute bottom-2 left-[10%] w-12 h-12 bg-primary-yellow border-[3px] border-brutal-black overflow-hidden flex items-center justify-center"
+          style={{ transform: `translateY(${playerY}px)` }}
+        >
+          <img src={heroImg} alt="Player" className="w-full h-full object-cover" />
+        </div>
+
+        {/* Obstacle */}
+        <div 
+          ref={obstacleRef}
+          className="absolute bottom-2 w-10 h-10 bg-tertiary-pink border-[3px] border-brutal-black flex items-center justify-center text-xl"
+          style={{ left: `${obstacleX}%` }}
+        >
+          🐛
+        </div>
+
+        {/* Overlays */}
+        <AnimatePresence>
+          {!isPlaying && !isGameOver && (
+            <motion.div 
+              initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+              className="absolute inset-0 bg-white/80 flex flex-col items-center justify-center"
+            >
+              <p className="font-mono font-bold text-lg mb-4 text-center px-4">PRESS SPACE OR TAP TO JUMP OVER BUGS</p>
+              <button 
+                onClick={(e) => { e.stopPropagation(); startGame() }}
+                className="bg-secondary-cyan border-[3px] border-brutal-black px-6 py-2 font-bold font-grotesk text-xl shadow-[4px_4px_0px_#0A0A0A] hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[6px_6px_0px_#0A0A0A]"
+              >
+                START GAME
+              </button>
+            </motion.div>
+          )}
+
+          {isGameOver && (
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }}
+              className="absolute inset-0 bg-brutal-black/90 flex flex-col items-center justify-center text-brutal-white"
+            >
+              <h3 className="font-grotesk font-black text-5xl mb-2 text-tertiary-pink">GAME OVER</h3>
+              <p className="font-mono font-bold mb-6">YOU SURVIVED {score} BUGS</p>
+              <button 
+                onClick={(e) => { e.stopPropagation(); startGame() }}
+                className="bg-primary-yellow text-brutal-black border-[3px] border-brutal-black px-6 py-2 font-bold font-grotesk text-xl shadow-[4px_4px_0px_#FFE500] hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[6px_6px_0px_#FFE500]"
+              >
+                TRY AGAIN
+              </button>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+
+      {score > 10 && (
+        <div className="mt-4 p-3 bg-green-400 border-[3px] border-brutal-black font-mono font-bold text-sm">
+          🏆 Achievement Unlocked: Bug Squasher!
+        </div>
+      )}
+    </div>
+  )
+
+  if (embedded) {
+    return gameContent
+  }
+
   return (
     <div className="fixed inset-0 z-[100] bg-brutal-black/90 flex flex-col items-center justify-center p-4 backdrop-blur-sm">
       <button 
@@ -109,82 +191,7 @@ export default function MiniGame({ onClose }) {
       >
         <FiX size={24} strokeWidth={4} />
       </button>
-
-      <div className="w-full max-w-2xl bg-base-cream border-[4px] border-brutal-black p-6 relative overflow-hidden shadow-[16px_16px_0px_#FF2D78]">
-        <div className="flex justify-between items-center mb-4 border-b-[4px] border-brutal-black pb-4">
-          <h2 className="font-grotesk font-black text-3xl uppercase tracking-widest">Angga Run</h2>
-          <div className="font-mono font-bold text-2xl bg-brutal-black text-primary-yellow px-4 py-1">
-            SCORE: {score}
-          </div>
-        </div>
-
-        {/* Game Area */}
-        <div 
-          className="w-full h-64 border-[3px] border-brutal-black bg-white relative overflow-hidden cursor-pointer"
-          onClick={jump}
-        >
-          {/* Ground */}
-          <div className="absolute bottom-0 w-full h-2 bg-brutal-black"></div>
-
-          {/* Player */}
-          <div 
-            ref={playerRef}
-            className="absolute bottom-2 left-[10%] w-12 h-12 bg-primary-yellow border-[3px] border-brutal-black overflow-hidden flex items-center justify-center"
-            style={{ transform: `translateY(${playerY}px)` }}
-          >
-            <img src={heroImg} alt="Player" className="w-full h-full object-cover" />
-          </div>
-
-          {/* Obstacle */}
-          <div 
-            ref={obstacleRef}
-            className="absolute bottom-2 w-10 h-10 bg-tertiary-pink border-[3px] border-brutal-black flex items-center justify-center text-xl"
-            style={{ left: `${obstacleX}%` }}
-          >
-            🐛
-          </div>
-
-          {/* Overlays */}
-          <AnimatePresence>
-            {!isPlaying && !isGameOver && (
-              <motion.div 
-                initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-                className="absolute inset-0 bg-white/80 flex flex-col items-center justify-center"
-              >
-                <p className="font-mono font-bold text-lg mb-4 text-center px-4">PRESS SPACE OR TAP TO JUMP OVER BUGS</p>
-                <button 
-                  onClick={(e) => { e.stopPropagation(); startGame() }}
-                  className="bg-secondary-cyan border-[3px] border-brutal-black px-6 py-2 font-bold font-grotesk text-xl shadow-[4px_4px_0px_#0A0A0A] hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[6px_6px_0px_#0A0A0A]"
-                >
-                  START GAME
-                </button>
-              </motion.div>
-            )}
-
-            {isGameOver && (
-              <motion.div 
-                initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }}
-                className="absolute inset-0 bg-brutal-black/90 flex flex-col items-center justify-center text-brutal-white"
-              >
-                <h3 className="font-grotesk font-black text-5xl mb-2 text-tertiary-pink">GAME OVER</h3>
-                <p className="font-mono font-bold mb-6">YOU SURVIVED {score} BUGS</p>
-                <button 
-                  onClick={(e) => { e.stopPropagation(); startGame() }}
-                  className="bg-primary-yellow text-brutal-black border-[3px] border-brutal-black px-6 py-2 font-bold font-grotesk text-xl shadow-[4px_4px_0px_#FFE500] hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[6px_6px_0px_#FFE500]"
-                >
-                  TRY AGAIN
-                </button>
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </div>
-
-        {score > 10 && (
-          <div className="mt-4 p-3 bg-green-400 border-[3px] border-brutal-black font-mono font-bold text-sm">
-            🏆 Achievement Unlocked: Bug Squasher!
-          </div>
-        )}
-      </div>
+      {gameContent}
     </div>
   )
 }
