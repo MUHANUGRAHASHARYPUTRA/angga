@@ -1,10 +1,13 @@
-import { motion } from "framer-motion"
+import { useState } from "react"
+import { motion, AnimatePresence } from "framer-motion"
 import PhotoFrame from "./ui/PhotoFrame"
 import BrutalButton from "./ui/BrutalButton"
+import CVReceiptModal from "./ui/CVReceiptModal"
 import { useLanguage } from "../contexts/LanguageContext"
 
 export default function Hero() {
   const { t } = useLanguage()
+  const [isReceiptOpen, setIsReceiptOpen] = useState(false)
   const easeBounce = [0.34, 1.56, 0.64, 1]
 
   const title = "ANGGA"
@@ -17,8 +20,35 @@ export default function Hero() {
   }
 
   return (
-    <section id="home" className="relative min-h-screen pt-32 pb-24 md:pt-24 md:pb-12 pattern-dots flex flex-col justify-start md:justify-center overflow-hidden">
-      <div className="container mx-auto px-6 grid md:grid-cols-2 gap-12 items-center flex-grow">
+    <section id="home" className="relative min-h-screen pt-32 pb-24 md:pt-24 md:pb-12 flex flex-col justify-start md:justify-center overflow-hidden z-10" 
+      style={{ 
+        backgroundImage: 'linear-gradient(105deg, #FFFAEB 0%, #FFFAEB 49.5%, #333333 49.5%, #333333 50.5%, #FFFFFF 50.5%, #FFFFFF 100%)' 
+      }}>
+      
+      {/* Lightweight Static Pop-Art Stickers & Pattern */}
+      <div className="absolute inset-0 z-0 pointer-events-none">
+        
+        {/* Speckled Pattern Overlay (Bercak-bercak) */}
+        <div className="absolute inset-0 pattern-dots opacity-40"></div>
+
+        {/* Sticker 1: Thunderbolt */}
+        <div className="absolute top-[15%] left-[5%] md:left-[15%] w-16 h-16 bg-brutal-white border-[4px] border-brutal-black rounded-full flex items-center justify-center text-3xl shadow-[4px_4px_0px_#0A0A0A] -rotate-12">
+          ⚡
+        </div>
+
+        {/* Sticker 2: Alien */}
+        <div className="absolute bottom-[20%] right-[5%] md:right-[15%] w-20 h-20 bg-secondary-cyan border-[4px] border-brutal-black rounded-[2rem] flex items-center justify-center text-4xl shadow-[6px_6px_0px_#0A0A0A] rotate-12">
+          👾
+        </div>
+
+        {/* Sticker 3: Exclamation */}
+        <div className="absolute top-[40%] right-[35%] w-12 h-12 bg-brutal-white border-[3px] border-brutal-black rounded-sm flex items-center justify-center text-2xl shadow-[4px_4px_0px_#0A0A0A] rotate-[25deg] hidden md:flex">
+          ❗
+        </div>
+
+      </div>
+
+      <div className="container mx-auto px-6 grid md:grid-cols-2 gap-12 items-center flex-grow relative z-10">
         
         {/* Left Side Content */}
         <motion.div className="flex flex-col items-start gap-6 z-10 order-last md:order-none">
@@ -63,7 +93,7 @@ export default function Hero() {
             className="text-3xl md:text-5xl font-black font-grotesk flex flex-wrap gap-3 items-center"
           >
             <span>{t.hero.role1}</span>
-            <span className="bg-primary-yellow px-3 py-1 border-[3px] border-brutal-black shadow-[4px_4px_0px_#0A0A0A] rotate-2">
+            <span className="bg-primary-yellow text-brutal-black px-3 py-1 border-[3px] border-brutal-black shadow-[4px_4px_0px_#0A0A0A] rotate-2">
               {t.hero.role2}
             </span>
           </motion.div>
@@ -96,7 +126,7 @@ export default function Hero() {
               </BrutalButton>
             </motion.div>
             <motion.div variants={{ hidden: { opacity: 0, y: 30, scale: 0.9 }, visible: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.35 } } }}>
-              <BrutalButton variant="white" href="/cv.pdf" target="_blank">
+              <BrutalButton variant="white" onClick={() => setIsReceiptOpen(true)}>
                 {t.hero.cv}
               </BrutalButton>
             </motion.div>
@@ -131,6 +161,10 @@ export default function Hero() {
           100% { transform: translateX(-50%); }
         }
       `}} />
+
+      <AnimatePresence>
+        <CVReceiptModal isOpen={isReceiptOpen} onClose={() => setIsReceiptOpen(false)} />
+      </AnimatePresence>
     </section>
   )
 }

@@ -115,7 +115,7 @@ export default function Projects() {
               <SectionLabel color="bg-secondary-cyan" className="mb-2">{t.projects.title}</SectionLabel>
             </motion.div>
             <p className="font-grotesk font-black text-2xl uppercase mt-2">
-              <ScrambleText text={`0${filteredProjects.length} Karya yang pernah saya bangun.`} trigger={scrambleTrigger} />
+              <ScrambleText text={`0${filteredProjects.length} ${t.projects.sub}`} trigger={scrambleTrigger} />
             </p>
           </div>
           

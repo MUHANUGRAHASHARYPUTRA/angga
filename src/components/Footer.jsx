@@ -50,7 +50,7 @@ export default function Footer() {
               </motion.span>
             ))}
           </div>
-          <span className="text-sm font-mono text-brutal-white tracking-normal font-normal mt-1">© 2025</span>
+          <span className="text-sm font-mono text-brutal-white tracking-normal font-normal mt-1">© 2026</span>
         </div>
 
         {/* Center */}

@@ -18,7 +18,7 @@ export const translations = {
       role2: "Developer.",
       sub: "Information Systems · Universitas Hasanuddin · Makassar",
       work: "View My Work ↓",
-      cv: "Download CV"
+      cv: "Print CV Receipt"
     },
     about: {
       title: "ABOUT ME",
@@ -30,6 +30,7 @@ export const translations = {
     },
     skills: {
       title: "SKILLS",
+      sub: "Tap the monsters!",
       frontend: "Frontend",
       backend: "Backend",
       tools: "Tools",
@@ -37,6 +38,7 @@ export const translations = {
     },
     projects: {
       title: "PROJECTS",
+      sub: "Works I've built so far.",
       filters: ["All", "Web App", "UI/UX", "Other"],
       live: "Live →",
       github: "GitHub ↗"
@@ -48,6 +50,34 @@ export const translations = {
       email: "Email",
       message: "Message",
       send: "SEND MESSAGE →"
+    },
+    testimonials: {
+      title: "WALL OF LOVE",
+      sub: "What they say about me",
+      items: [
+        { name: "Lecturer", text: "Angga is highly creative and detail-oriented. His neobrutalism UI concepts are always bold and functional." },
+        { name: "Project Partner", text: "Working with him is super fun! He never stops experimenting with new UI interactions." },
+        { name: "Client", text: "The website he built for my property business was flawless. Clean code and bold design!" }
+      ]
+    },
+    setup: {
+      title: "DAILY SETUP",
+      sub: "Weapons of mass construction",
+      items: {
+        laptop: "MacBook - Main workhorse",
+        coffee: "Coffee - Coding fuel",
+        keyboard: "Keyboard - Click clack"
+      }
+    },
+    faq: {
+      title: "QUIRKY FAQ",
+      sub: "Questions nobody asked",
+      tapToView: "Tap to view reply",
+      items: [
+        { q: "Can you fix my printer or hack my ex's Facebook?", a: "No. I'm a Web Developer, not a service guy." },
+        { q: "Why is this website so bright?", a: "So you don't fall asleep reading my CV." },
+        { q: "What's with the Neobrutalism?", a: "Because standard corporate design is boring." }
+      ]
     }
   },
   id: {
@@ -65,7 +95,7 @@ export const translations = {
       role2: "Web.",
       sub: "Sistem Informasi · Universitas Hasanuddin · Makassar",
       work: "Lihat Karya Gue ↓",
-      cv: "Unduh CV"
+      cv: "Cetak Struk CV"
     },
     about: {
       title: "TENTANG GUE",
@@ -77,6 +107,7 @@ export const translations = {
     },
     skills: {
       title: "KEAHLIAN GUE",
+      sub: "Pencet monsternya!",
       frontend: "Frontend",
       backend: "Backend",
       tools: "Tools",
@@ -84,6 +115,7 @@ export const translations = {
     },
     projects: {
       title: "PROYEK GUE",
+      sub: "Karya yang pernah saya bangun.",
       filters: ["Semua", "Web App", "UI/UX", "Lainnya"],
       live: "Langsung →",
       github: "GitHub ↗"
@@ -95,6 +127,34 @@ export const translations = {
       email: "Email",
       message: "Pesan",
       send: "KIRIM PESAN →"
+    },
+    testimonials: {
+      title: "PUJIAN GUE",
+      sub: "Apa kata mereka tentang gue",
+      items: [
+        { name: "Dosen", text: "Angga sangat kreatif dan berani mengambil risiko dalam desain antarmuka. Konsep neobrutalism-nya selalu out-of-the-box." },
+        { name: "Teman Kelompok", text: "Asli seru banget kerja bareng Angga! Orangnya nggak pernah kehabisan ide aneh yang ternyata keren buat UI." },
+        { name: "Klien", text: "Website properti yang dia bikin rapi banget kodingannya. Desainnya juga bold dan nggak ngebosenin!" }
+      ]
+    },
+    setup: {
+      title: "SENJATA TEMPUR",
+      sub: "Alat yang menemani gue ngoding",
+      items: {
+        laptop: "MacBook - Mesin utama",
+        coffee: "Kopi Hitam - Bahan bakar koding",
+        keyboard: "Keyboard Mekanikal - Biar berisik"
+      }
+    },
+    faq: {
+      title: "Q&A NYELENEH",
+      sub: "Pertanyaan yang sering ditanyain",
+      tapToView: "Ketuk untuk melihat balasan",
+      items: [
+        { q: "Bisa benerin printer atau hack Facebook mantan?", a: "Nggak. Gue Web Developer, bukan kang servis." },
+        { q: "Kenapa desain web ini terang banget?", a: "Biar mata lu melek pas baca CV gue." },
+        { q: "Kenapa pake gaya desain ginian?", a: "Biar beda aja, desain korporat mah udah banyak." }
+      ]
     }
   }
 };
