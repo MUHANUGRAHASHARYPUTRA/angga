@@ -26,13 +26,21 @@ export default function KeyboardSmash() {
   const [status, setStatus] = useState('idle')
   
   const timerRef = useRef(null)
-  const codeEndRef = useRef(null)
+  const containerRef = useRef(null)
+  const inputRef = useRef(null)
 
   const startGame = () => {
     setProgress(0)
     setCodeLines([])
     setTimeLeft(10)
     setStatus('playing')
+
+    // Focus hidden input for mobile keyboard without scrolling the page
+    setTimeout(() => {
+      if (inputRef.current) {
+        inputRef.current.focus({ preventScroll: true })
+      }
+    }, 10)
 
     timerRef.current = setInterval(() => {
       setTimeLeft(prev => {
@@ -46,11 +54,8 @@ export default function KeyboardSmash() {
     }, 1000)
   }
 
-  const addProgress = useCallback((e) => {
+  const addProgress = useCallback(() => {
     if (status !== 'playing') return
-    
-    // Prevent scrolling when mashing space on keyboard
-    if (e && e.code === 'Space') e.preventDefault()
     
     setProgress(p => {
       const newP = p + 3
@@ -70,26 +75,60 @@ export default function KeyboardSmash() {
   }, [status])
 
   const handleKeyDown = useCallback((e) => {
-    addProgress(e)
-  }, [addProgress])
+    if (status !== 'playing') return
+    
+    // Prevent scrolling when mashing space or arrows
+    if (['Space', 'ArrowUp', 'ArrowDown', 'PageUp', 'PageDown'].includes(e.code)) {
+      e.preventDefault()
+    }
+    
+    addProgress()
+  }, [addProgress, status])
 
   useEffect(() => {
     window.addEventListener('keydown', handleKeyDown)
     return () => {
       window.removeEventListener('keydown', handleKeyDown)
-      clearInterval(timerRef.current)
     }
   }, [handleKeyDown])
 
   useEffect(() => {
-    if (codeEndRef.current) {
-      codeEndRef.current.scrollIntoView({ behavior: 'smooth' })
+    return () => {
+      clearInterval(timerRef.current)
+    }
+  }, [])
+
+  useEffect(() => {
+    if (containerRef.current) {
+      containerRef.current.scrollTop = containerRef.current.scrollHeight
     }
   }, [codeLines])
+
+  const handlePointerDown = (e) => {
+    e.preventDefault()
+    addProgress()
+    if (status === 'playing' && inputRef.current) {
+      inputRef.current.focus({ preventScroll: true })
+    }
+  }
 
   return (
     <div className="bg-brutal-black border-[8px] border-tertiary-pink rounded-3xl p-6 shadow-[16px_16px_0px_#0A0A0A] w-full h-full flex flex-col relative text-green-500 font-mono">
       
+      {/* Hidden input to bring up mobile keyboard */}
+      <input
+        ref={inputRef}
+        type="text"
+        className="absolute top-0 left-0 opacity-0 w-[1px] h-[1px] pointer-events-none z-[-1]"
+        onChange={(e) => {
+          addProgress()
+          e.target.value = ''
+        }}
+        autoCapitalize="none"
+        autoComplete="off"
+        spellCheck="false"
+      />
+
       <div className="flex justify-between items-center mb-4 border-b-[2px] border-green-500 pb-2">
         <h3 className="font-bold text-xl uppercase tracking-widest">root@ayya:~# HACKER_MODE</h3>
         <div className="flex gap-4 font-bold">
@@ -105,8 +144,9 @@ export default function KeyboardSmash() {
       </div>
 
       <div 
+        ref={containerRef}
         className="flex-grow bg-black/50 border-[2px] border-green-500/50 p-4 overflow-hidden relative cursor-pointer select-none touch-none"
-        onPointerDown={(e) => { e.preventDefault(); addProgress() }}
+        onPointerDown={handlePointerDown}
       >
         <div className="flex flex-col justify-end min-h-full">
           {codeLines.map((line, i) => (
@@ -115,7 +155,6 @@ export default function KeyboardSmash() {
           {status === 'playing' && (
             <div className="animate-pulse">_</div>
           )}
-          <div ref={codeEndRef} />
         </div>
 
         {/* Overlays */}
