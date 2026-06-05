@@ -1,6 +1,7 @@
 import { useState } from "react"
 import { motion, AnimatePresence, useScroll, useMotionValueEvent } from "framer-motion"
 import { FiMenu, FiX, FiGlobe } from "react-icons/fi"
+import { Link } from "react-router-dom"
 import BrutalButton from "./ui/BrutalButton"
 import { useLanguage } from "../contexts/LanguageContext"
 import { cn } from "../lib/utils"
@@ -50,13 +51,23 @@ export default function Navbar() {
         {/* Desktop Nav */}
         <div className="hidden md:flex items-center gap-6 font-grotesk font-bold uppercase text-sm">
           {navKeys.map((key) => (
-            <a 
-              key={key} 
-              href={key === "playground" ? "/playground" : `/${key === "home" ? "" : "#" + key}`}
-              className="nav-link-hover py-2"
-            >
-              {t.nav[key]}
-            </a>
+            key === "playground" ? (
+              <Link 
+                key={key} 
+                to="/playground"
+                className="nav-link-hover py-2"
+              >
+                {t.nav[key]}
+              </Link>
+            ) : (
+              <a 
+                key={key} 
+                href={`/${key === "home" ? "" : "#" + key}`}
+                className="nav-link-hover py-2"
+              >
+                {t.nav[key]}
+              </a>
+            )
           ))}
           
           <button 
@@ -115,15 +126,27 @@ export default function Navbar() {
             
             <div className="flex flex-col gap-8 text-4xl font-grotesk font-black uppercase">
               {navKeys.map((key) => (
-                <a 
-                  key={key}
-                  href={key === "playground" ? "/playground" : `/${key === "home" ? "" : "#" + key}`}
-                  onClick={() => setIsOpen(false)}
-                  className="hover:translate-x-2 transition-transform hover:text-brutal-white"
-                  style={{ textShadow: "2px 2px 0px #0A0A0A" }}
-                >
-                  {t.nav[key]}
-                </a>
+                key === "playground" ? (
+                  <Link 
+                    key={key}
+                    to="/playground"
+                    onClick={() => setIsOpen(false)}
+                    className="hover:translate-x-2 transition-transform hover:text-brutal-white"
+                    style={{ textShadow: "2px 2px 0px #0A0A0A" }}
+                  >
+                    {t.nav[key]}
+                  </Link>
+                ) : (
+                  <a 
+                    key={key}
+                    href={`/${key === "home" ? "" : "#" + key}`}
+                    onClick={() => setIsOpen(false)}
+                    className="hover:translate-x-2 transition-transform hover:text-brutal-white"
+                    style={{ textShadow: "2px 2px 0px #0A0A0A" }}
+                  >
+                    {t.nav[key]}
+                  </a>
+                )
               ))}
               <div className="mt-8">
                 <BrutalButton 
