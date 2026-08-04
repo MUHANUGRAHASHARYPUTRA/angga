@@ -5,6 +5,7 @@ import DailySetup from "../components/DailySetup"
 import Projects from "../components/Projects"
 import Testimonials from "../components/Testimonials"
 import FAQ from "../components/FAQ"
+import ServiceReceipt from "../components/ServiceReceipt"
 import Contact from "../components/Contact"
 import FunZoneBanner from "../components/FunZoneBanner"
 
@@ -18,6 +19,7 @@ export default function Home() {
       <Projects />
       <Testimonials />
       <FAQ />
+      <ServiceReceipt />
       <FunZoneBanner />
       <Contact />
     </main>

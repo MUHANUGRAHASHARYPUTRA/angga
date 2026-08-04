@@ -153,6 +153,29 @@ export const translations = {
       c2: "Fuel for code.",
       c3: "It works on my machine.",
       c4: "Just center a div."
+    },
+    services: {
+      title: "NEED A WEBSITE?",
+      sub: "Checkout my services receipt",
+      receiptTitle: "ANGGA WEB SERVICES",
+      date: "DATE",
+      time: "TIME",
+      cashier: "CASHIER",
+      customer: "CUSTOMER",
+      qty: "QTY",
+      item: "ITEM",
+      price: "PRICE",
+      items: [
+        { name: "Custom UI/UX Design", price: "Priceless" },
+        { name: "Frontend Development", price: "Bold" },
+        { name: "Responsive & Fast", price: "100%" },
+        { name: "Neobrutalism Vibe", price: "Included" }
+      ],
+      total: "TOTAL",
+      totalValue: "Your Dream Web",
+      footer: "THANKS FOR VISITING!",
+      barcode: "AVAILABLE FOR WORK",
+      cta: "START A PROJECT →"
     }
   },
   id: {
@@ -305,6 +328,29 @@ export const translations = {
       c2: "Bahan bakar koding.",
       c3: "Di laptop gue jalan kok.",
       c4: "Cuma nyenterin div aja susah."
+    },
+    services: {
+      title: "BUTUH WEBSITE?",
+      sub: "Cek struk jasa pembuatan web gue",
+      receiptTitle: "JASA WEB ANGGA",
+      date: "TANGGAL",
+      time: "WAKTU",
+      cashier: "KASIR",
+      customer: "PELANGGAN",
+      qty: "QTY",
+      item: "BARANG",
+      price: "HARGA",
+      items: [
+        { name: "Desain UI/UX Custom", price: "Priceless" },
+        { name: "Frontend Development", price: "Bold" },
+        { name: "Responsif & Cepat", price: "100%" },
+        { name: "Vibe Neobrutalism", price: "Include" }
+      ],
+      total: "TOTAL",
+      totalValue: "Web Impian",
+      footer: "TERIMA KASIH TELAH MAMPIR!",
+      barcode: "TERSEDIA UNTUK KERJA",
+      cta: "MULAI PROYEK BARU →"
     }
   }
 };
